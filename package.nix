@@ -2,6 +2,7 @@
   , stdenv 
   , pkg-config
   , cmake
+  , rapidfuzz-cpp
   , clang
   , clang-tools
   , boost
@@ -10,7 +11,7 @@
   , enableTests ? false 
 }:
 stdenv.mkDerivation {
-  name = "nix-c++-template";
+  name = "launch";
 
   # good source filtering is important for caching of builds.
   # It's easier when subprojects have their own distinct subfolders.
@@ -25,7 +26,7 @@ stdenv.mkDerivation {
   # at compile time) and normal `buildInputs` (runnable on target
   # platform at run time) is an important preparation for cross-compilation.
   nativeBuildInputs = [ cmake clang-tools pkg-config ];
-  buildInputs = [ boost gtkmm4 ];
+  buildInputs = [ boost gtkmm4 rapidfuzz-cpp ];
 
   # Test inputs
   checkInputs = [ catch2 ];

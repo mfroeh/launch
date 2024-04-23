@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 
-project(nix-c++-template VERSION 1.0.0 LANGUAGES C CXX)
+project(launch VERSION 1.0.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,13 +14,14 @@ endif()
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
+find_package(rapidfuzz REQUIRED)
 
-add_executable(nix-c++-template src/main.cc src/helloworld.cc)
+add_executable(launch src/main.cc src/window.cc src/row.cc)
 
-target_link_libraries(nix-c++-template PRIVATE Boost::system ${GTKMM_LIBRARIES})
+target_link_libraries(launch PRIVATE Boost::system ${GTKMM_LIBRARIES} rapidfuzz::rapidfuzz)
 
-target_include_directories(nix-c++-template PRIVATE ${GTKMM_INCLUDE_DIRS})
-target_link_directories(nix-c++-template PRIVATE ${GTKMM_LIBRARY_DIRS})
-target_compile_options(nix-c++-template PRIVATE ${GTKMM_CFLAGS_OTHER})
+target_include_directories(launch PRIVATE ${GTKMM_INCLUDE_DIRS})
+target_link_directories(launch PRIVATE ${GTKMM_LIBRARY_DIRS})
+target_compile_options(launch PRIVATE ${GTKMM_CFLAGS_OTHER})
 
-install(TARGETS nix-c++-template DESTINATION bin)
+install(TARGETS launch DESTINATION bin)
