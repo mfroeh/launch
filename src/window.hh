@@ -24,4 +24,10 @@ protected:
     std::vector<std::filesystem::path> executables;
 
     void onTextChanged();
+
+    bool onKeyPressed(guint keyval, guint keycode, Gdk::ModifierType state);
+
+    void rowSelected(const Gtk::ListBoxRow* row);
+
+    void onEntryActivate();
 };
