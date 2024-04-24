@@ -11,7 +11,7 @@
 
 class SearchWindow : public Gtk::ApplicationWindow {
 public:
-  SearchWindow();
+  SearchWindow(const std::string& mode);
   virtual ~SearchWindow();
 
 protected:
@@ -21,6 +21,7 @@ protected:
     Gtk::ScrolledWindow optionsWindow;
     Gtk::ListBox options;
 
+    std::string mode;
     std::vector<std::filesystem::path> executables;
 
     void onTextChanged();

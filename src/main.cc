@@ -1,46 +1,30 @@
-#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <gtkmm/application.h>
-#include "gtkmm/label.h"
+#include <gtkmm/label.h>
 #include "window.hh"
 
-#if defined(__clang__)
-#define CC "clang++"
-#elif defined (__GNUC__)
-#define CC "g++"
-#else
-#define CC "<unknown compiler>"
-#endif
+#include <argparse/argparse.hpp>
 
-class MyWindow : public Gtk::ApplicationWindow {
-public:
-    MyWindow() {
-        set_title("GTKmm4 ListBoxRow Example");
-        set_default_size(300, 200);
+using namespace std;
 
-        // Create a ListBox
-        Gtk::ListBox listbox;
+int main(int argc, char *argv[])
+{
+  auto program = argparse::ArgumentParser("launch");
+  program.add_argument("mode")
+    .default_value("run")
+    .choices("run");
 
-        // Create ListBoxRows with text
-        for (int i = 1; i <= 5; ++i) {
-            auto row = Gtk::ListBoxRow();
+  try {
+    program.parse_args(argc, argv);
+  } catch (const std::exception& err) {
+    cerr << err.what() << endl;
+    cerr << program;
+    return 1;
+  }
 
-            // Create a label with text
-            auto label = Gtk::Label("Item " + std::to_string(i));
+  string mode = program.get("mode");
+  cout << "Mode: " << mode << endl;
 
-            // Set the label as the content of the ListBoxRow
-            row.set_child(label);
-
-            // Add the ListBoxRow to the ListBox
-            listbox.append(row);
-        }
-
-        // Add the ListBox to the window
-        set_child(listbox);
-    }
-};
-
-int main(int argc, char* argv[]) {
-  auto app = Gtk::Application::create("org.gtkmm.examples.base");
-  return app->make_window_and_run<SearchWindow>( argc, argv);
+  auto app = Gtk::Application::create();
+  return app->make_window_and_run<SearchWindow>(0, nullptr, mode);
 }

@@ -3,6 +3,7 @@
   , pkg-config
   , cmake
   , rapidfuzz-cpp
+  , argparse
   , clang
   , clang-tools
   , boost
@@ -26,7 +27,7 @@ stdenv.mkDerivation {
   # at compile time) and normal `buildInputs` (runnable on target
   # platform at run time) is an important preparation for cross-compilation.
   nativeBuildInputs = [ cmake clang-tools pkg-config ];
-  buildInputs = [ boost gtkmm4 rapidfuzz-cpp ];
+  buildInputs = [ boost gtkmm4 rapidfuzz-cpp argparse ];
 
   # Test inputs
   checkInputs = [ catch2 ];

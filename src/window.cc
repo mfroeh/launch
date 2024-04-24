@@ -24,7 +24,7 @@ using filesystem::path;
 
 vector<path> getExecutableFilesOnPath();
 
-SearchWindow::SearchWindow() : executables(getExecutableFilesOnPath())
+SearchWindow::SearchWindow(const string &mode) : mode(mode), executables(getExecutableFilesOnPath())
 {
   // avoid window manager resizing
   set_resizable(false);
@@ -146,17 +146,25 @@ void SearchWindow::rowSelected(const Gtk::ListBoxRow *row)
 
 void SearchWindow::onEntryActivate()
 {
-  
-  if (auto row = dynamic_cast<MyRow*>(options.get_selected_row()); row) {
-    pid_t child = fork();
-    if (child == -1) cerr << strerror(errno) << endl;
+  if (mode == "run")
+  {
+    if (auto row = dynamic_cast<MyRow *>(options.get_selected_row()); row)
+    {
+      pid_t child = fork();
+      if (child == -1)
+        cerr << strerror(errno) << endl;
 
-    if (child == 0) {
-      // inside child process
-      int ret = execv(row->path.c_str(), nullptr);
-      if (ret == -1) cerr << strerror(errno) << endl;
-    } else if (child != -1) {
-      get_application()->quit();
+      if (child == 0)
+      {
+        // inside child process
+        int ret = execv(row->path.c_str(), nullptr);
+        if (ret == -1)
+          cerr << strerror(errno) << endl;
+      }
+      else if (child != -1)
+      {
+        get_application()->quit();
+      }
     }
   }
 }

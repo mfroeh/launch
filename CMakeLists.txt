@@ -15,10 +15,11 @@ find_package(Boost REQUIRED COMPONENTS system)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 find_package(rapidfuzz REQUIRED)
+find_package(argparse REQUIRED)
 
 add_executable(launch src/main.cc src/window.cc src/row.cc)
 
-target_link_libraries(launch PRIVATE Boost::system ${GTKMM_LIBRARIES} rapidfuzz::rapidfuzz)
+target_link_libraries(launch PRIVATE Boost::system ${GTKMM_LIBRARIES} rapidfuzz::rapidfuzz argparse::argparse)
 
 target_include_directories(launch PRIVATE ${GTKMM_INCLUDE_DIRS})
 target_link_directories(launch PRIVATE ${GTKMM_LIBRARY_DIRS})
