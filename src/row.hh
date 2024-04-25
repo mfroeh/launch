@@ -1,16 +1,21 @@
 #pragma once
 
-#include "gtkmm/box.h"
-#include "gtkmm/label.h"
+#include <gtkmm/box.h>
+#include <gtkmm/label.h>
 #include <gtkmm/listboxrow.h>
 #include <filesystem>
 
+#include "mode.hh"
+
+template <class T>
 class MyRow : public Gtk::ListBoxRow {
 public:
-  MyRow(const std::filesystem::path& path);
-  std::filesystem::path path;
+  MyRow(const Item<T>& item);
+  Item<T> item;
 
 protected:
   Gtk::Box hbox;
   Gtk::Label label;
 };
+
+#include "row.cc"

@@ -1,7 +1,8 @@
 #include "row.hh"
 
-MyRow::MyRow(const std::filesystem::path& path) : path(path) {
-  label.set_label(path.filename().c_str());
+template <class T>
+MyRow<T>::MyRow(const Item<T>& item) : item(item) {
+  label.set_label(item.displayName);
   hbox.set_orientation(Gtk::Orientation::HORIZONTAL);
   hbox.append(label);
   set_child(hbox);
