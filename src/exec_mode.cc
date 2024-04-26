@@ -5,43 +5,46 @@
 #include <cstring>
 #include <errno.h>
 #include <iostream>
+#include <ranges>
 #include <unistd.h>
+#include <unordered_set>
 
 using namespace std;
 using filesystem::directory_entry;
 using filesystem::path;
 
 std::vector<Item<ExecData>> ExecMode::getItems() {
-  vector<path> dirs;
-
   string PATH = getenv("PATH");
   stringstream ss(PATH);
   string dirName;
+
+  unordered_set<path> dirs;
   while (getline(ss, dirName, ':')) {
     auto path = filesystem::path(dirName);
-    if (filesystem::exists(path) && filesystem::is_directory(path) &&
-        ranges::find(dirs, path) == dirs.end()) {
-      dirs.push_back(path);
-    }
+    if (filesystem::exists(path) && filesystem::is_directory(path))
+      dirs.insert(path);
   }
 
-  vector<path> executables;
-  for (const path &dir : dirs) {
-    auto dirIter = filesystem::directory_iterator(dir);
-    for (const directory_entry &entry : dirIter) {
-      // if executable
-      const path &path = entry.path();
-      if (access(path.c_str(), X_OK) == 0) {
-        executables.push_back(entry.path());
-      }
-    }
-  }
+  auto getPath = [](const directory_entry &entry) { return entry.path(); };
 
-  vector<Item<ExecData>> items;
-  ranges::transform(executables, back_inserter(items), [](const path &path) {
+  auto isExecutable = [](const path &path) {
+    return access(path.c_str(), X_OK) == 0;
+  };
+
+  auto makeItem = [](const path &path) {
     return Item<ExecData>{.displayName = path.filename().c_str(),
                           .data = ExecData{.path = path}};
-  });
+  };
+
+  vector<Item<ExecData>> items;
+  for (const path &dir : dirs) {
+    auto dirIter = filesystem::directory_iterator(dir);
+    ranges::copy(dirIter | ranges::views::transform(getPath) |
+                     ranges::views::filter(isExecutable) |
+                     ranges::views::transform(makeItem),
+                 back_inserter(items));
+  }
+
   return items;
 }
 
