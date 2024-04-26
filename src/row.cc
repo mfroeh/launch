@@ -1,5 +1,4 @@
 #include "row.hh"
-#include "gtkmm/separator.h"
 
 template <class T> MyRow<T>::MyRow(const Item<T> &item) : item(item) {
   label.set_label(item.displayName);

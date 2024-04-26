@@ -1,10 +1,8 @@
 #pragma once
 
-#include "giomm/desktopappinfo.h"
 #include "mode.hh"
-#include <filesystem>
-#include <fstream>
-#include <optional>
+
+#include <giomm/desktopappinfo.h>
 #include <vector>
 
 struct DesktopData {

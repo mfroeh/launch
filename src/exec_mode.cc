@@ -5,7 +5,6 @@
 #include <cstring>
 #include <errno.h>
 #include <iostream>
-#include <ranges>
 #include <unistd.h>
 
 using namespace std;

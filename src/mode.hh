@@ -1,7 +1,6 @@
 #pragma once
 
 #include "giomm/icon.h"
-#include <optional>
 #include <string>
 #include <vector>
 
