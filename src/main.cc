@@ -1,23 +1,23 @@
-#include <iostream>
+#include "desktop_mode.hh"
+#include "exec_mode.hh"
+#include "window.hh"
 #include <gtkmm/application.h>
 #include <gtkmm/label.h>
-#include "window.hh"
-#include "exec_mode.hh"
+#include <iostream>
 
 #include <argparse/argparse.hpp>
+#include <memory>
 
 using namespace std;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   auto program = argparse::ArgumentParser("launch");
-  program.add_argument("mode")
-    .default_value("exec")
-    .choices("exec");
+  program.add_argument("mode").default_value("desktop").choices("exec",
+                                                                "desktop");
 
   try {
     program.parse_args(argc, argv);
-  } catch (const std::exception& err) {
+  } catch (const std::exception &err) {
     cerr << err.what() << endl;
     cerr << program;
     return 1;
@@ -28,7 +28,11 @@ int main(int argc, char *argv[])
 
   auto app = Gtk::Application::create();
   if (mode == "exec") {
-    return app->make_window_and_run<SearchWindow<ExecData>>(0, nullptr, make_unique<ExecMode>());
+    return app->make_window_and_run<SearchWindow<ExecData>>(
+        0, nullptr, make_unique<ExecMode>());
+  } else if (mode == "desktop") {
+    return app->make_window_and_run<SearchWindow<DesktopData>>(
+        0, nullptr, make_unique<DesktopMode>());
   }
 
   return 1;

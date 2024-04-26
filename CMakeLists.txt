@@ -17,7 +17,7 @@ pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 find_package(rapidfuzz REQUIRED)
 find_package(argparse REQUIRED)
 
-add_executable(launch src/main.cc src/exec_mode.cc)
+add_executable(launch src/main.cc src/exec_mode.cc src/desktop_mode.cc)
 
 target_link_libraries(launch PRIVATE Boost::system ${GTKMM_LIBRARIES} rapidfuzz::rapidfuzz argparse::argparse)
 

@@ -3,10 +3,7 @@
 #include "gtkmm/box.h"
 #include "gtkmm/listbox.h"
 #include "gtkmm/scrolledwindow.h"
-#include "gtkmm/widget.h"
 #include <gtkmm/entry.h>
-#include <filesystem>
-#include <vector>
 #include <memory>
 #include <gtkmm/applicationwindow.h>
 #include "mode.hh"
