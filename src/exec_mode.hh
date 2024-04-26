@@ -9,6 +9,8 @@ struct ExecData {
 };
 
 class ExecMode : public Mode<ExecData> {
+public:
+  ExecMode();
   std::vector<Item<ExecData>> getItems() override;
   void onActivation(const ExecData &item) override;
 };

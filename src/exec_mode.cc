@@ -13,6 +13,8 @@ using namespace std;
 using filesystem::directory_entry;
 using filesystem::path;
 
+ExecMode::ExecMode() {}
+
 std::vector<Item<ExecData>> ExecMode::getItems() {
   string PATH = getenv("PATH");
   stringstream ss(PATH);

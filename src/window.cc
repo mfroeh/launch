@@ -7,7 +7,6 @@
 #include <gdkmm/display.h>
 #include <gtkmm.h>
 #include <gtkmm/enums.h>
-#include <iostream>
 
 #include <algorithm>
 #include <rapidfuzz/fuzz.hpp>
@@ -22,7 +21,7 @@ SearchWindow<T>::SearchWindow(unique_ptr<Mode<T>> mode)
     : mode(std::move(mode)) {
   // avoid window manager resizing
   set_resizable(false);
-  set_default_size(360, 720);
+  set_default_size(360, 360);
 
   auto controller = Gtk::EventControllerKey::create();
   controller->signal_key_pressed().connect(

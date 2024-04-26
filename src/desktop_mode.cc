@@ -18,6 +18,8 @@ using namespace std;
 using filesystem::directory_entry;
 using filesystem::path;
 
+DesktopMode::DesktopMode() {}
+
 std::vector<Item<DesktopData>> DesktopMode::getItems() {
   string DATA_DIRS = getenv("XDG_DATA_DIRS");
   stringstream ss(DATA_DIRS);

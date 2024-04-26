@@ -1,15 +1,14 @@
 { lib
-  , stdenv 
-  , pkg-config
-  , cmake
-  , rapidfuzz-cpp
-  , argparse
-  , clang
-  , clang-tools
-  , boost
-  , catch2
-  , gtkmm4
-  , enableTests ? false 
+, stdenv
+, pkg-config
+, cmake
+, rapidfuzz-cpp
+, argparse
+, clang-tools
+, boost
+, catch2
+, gtkmm4
+, enableTests ? false
 }:
 stdenv.mkDerivation {
   name = "launch";
@@ -18,8 +17,8 @@ stdenv.mkDerivation {
   # It's easier when subprojects have their own distinct subfolders.
   src = lib.sourceByRegex ./. [
     "^src.*"
-      "^test.*"
-      "CMakeLists.txt"
+    "^test.*"
+    "CMakeLists.txt"
   ];
 
   # We now list the dependencies similar to the devShell before.

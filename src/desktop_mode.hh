@@ -10,6 +10,8 @@ struct DesktopData {
 };
 
 class DesktopMode : public Mode<DesktopData> {
+public:
+  DesktopMode();
   std::vector<Item<DesktopData>> getItems() override;
   void onActivation(const DesktopData &item) override;
 };
