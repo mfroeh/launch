@@ -16,10 +16,11 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 find_package(rapidfuzz REQUIRED)
 find_package(argparse REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
-add_executable(launch src/main.cc src/exec_mode.cc src/desktop_mode.cc)
+add_executable(launch src/main.cc src/exec_mode.cc src/desktop_mode.cc src/hypr_mode.cc)
 
-target_link_libraries(launch PRIVATE Boost::system ${GTKMM_LIBRARIES} rapidfuzz::rapidfuzz argparse::argparse)
+target_link_libraries(launch PRIVATE Boost::system ${GTKMM_LIBRARIES} rapidfuzz::rapidfuzz argparse::argparse nlohmann_json::nlohmann_json)
 
 target_include_directories(launch PRIVATE ${GTKMM_INCLUDE_DIRS})
 target_link_directories(launch PRIVATE ${GTKMM_LIBRARY_DIRS})
