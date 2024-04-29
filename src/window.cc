@@ -1,4 +1,5 @@
 #include "window.hh"
+#include "gdk/gdkkeysyms.h"
 #include "gtkmm/eventcontrollerkey.h"
 #include "gtkmm/listboxrow.h"
 #include "gtkmm/object.h"
@@ -80,24 +81,68 @@ template <class T> void SearchWindow<T>::onTextChanged() {
 template <class T>
 bool SearchWindow<T>::onKeyPressed(guint keyval, guint keycode,
                                    Gdk::ModifierType state) {
+  if (keyval == GDK_KEY_Return) {
+    onEntryActivated();
+    return true;
+  }
+
   bool isCtrlOnly =
       (state &
        (Gdk::ModifierType::SHIFT_MASK | Gdk::ModifierType::CONTROL_MASK |
         Gdk::ModifierType::ALT_MASK | Gdk::ModifierType::SUPER_MASK)) ==
       Gdk::ModifierType::CONTROL_MASK;
-  if (isCtrlOnly && (keyval == GDK_KEY_j || keyval == GDK_KEY_n)) {
+  if (!isCtrlOnly)
+    return false;
+
+  // TODO: some events don't propagate till here, since they are handled by
+  // entry (e.g. C-c, C-a)
+  switch (keyval) {
+  case GDK_KEY_j:
+  case GDK_KEY_n: {
     Gtk::ListBoxRow *row = options.get_selected_row();
     int rowIdx = row ? row->get_index() : -1;
     Gtk::ListBoxRow *nextRow = options.get_row_at_index(rowIdx + 1);
     options.select_row(nextRow ? *nextRow : *row);
-  } else if (isCtrlOnly && (keyval == GDK_KEY_k || keyval == GDK_KEY_p)) {
+    break;
+  }
+  case GDK_KEY_k:
+  case GDK_KEY_p: {
     Gtk::ListBoxRow *row = options.get_selected_row();
     int rowIdx = row ? row->get_index() : 1;
     Gtk::ListBoxRow *nextRow = options.get_row_at_index(rowIdx - 1);
     options.select_row(nextRow ? *nextRow : *row);
-  } else if (keyval == GDK_KEY_Return) {
-    onEntryActivated();
+    break;
   }
+  case GDK_KEY_w: {
+    int pos = entry.get_position();
+    string content = entry.get_text();
+
+    int wsPos = pos - 1;
+    while (wsPos >= 0 && content[wsPos] == ' ')
+      wsPos--;
+
+    while (wsPos >= 0 && content[wsPos] != ' ')
+      wsPos--;
+
+    wsPos = max(wsPos, 0);
+    entry.delete_text(wsPos, pos);
+    break;
+  }
+  case GDK_KEY_a: {
+    entry.set_position(0);
+    break;
+  }
+  case GDK_KEY_e: {
+    entry.set_position(entry.get_text_length());
+    break;
+  }
+  case GDK_KEY_c:
+  case GDK_KEY_d:
+  case GDK_KEY_q:
+    exit(0);
+  default:
+    return false;
+  };
 
   return true;
 }
