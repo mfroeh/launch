@@ -86,6 +86,9 @@ bool SearchWindow<T>::onKeyPressed(guint keyval, guint keycode,
     return true;
   }
 
+  if (keyval == GDK_KEY_Escape)
+    exit(0);
+
   bool isCtrlOnly =
       (state &
        (Gdk::ModifierType::SHIFT_MASK | Gdk::ModifierType::CONTROL_MASK |
